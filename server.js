@@ -1,8 +1,10 @@
 const express = require("express");
+const { authenticate } = require("./api/auth");
 const app = express();
 const PORT = 3000;
 
 require("dotenv").config();
+
 
 // Logs requests
 app.use(require("morgan")("dev"));
@@ -12,7 +14,7 @@ app.use(express.json());
 
 // Endpoint routes
 app.use(require('./api/auth').router);
-app.use("/playlists", require("./api/playlists"));
+app.use("/playlists", authenticate, require("./api/playlists"));
 app.use("/tracks", require("./api/tracks"));
 
 // Error-handling middleware

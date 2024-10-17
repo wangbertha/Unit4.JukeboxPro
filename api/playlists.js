@@ -3,10 +3,9 @@ const router = express.Router();
 module.exports = router;
 
 const prisma = require("../prisma");
-const { authenticate } = require("./auth");
 
 // GET /playlists corresponding to logged in user
-router.get("/", authenticate, async (req, res, next) => {
+router.get("/", async (req, res, next) => {
     try {
         const user = req.user;
         const playlists = await prisma.playlist.findMany({
@@ -19,7 +18,7 @@ router.get("/", authenticate, async (req, res, next) => {
 });
 
 // POST /playlists to logged in user
-router.post("/", authenticate, async (req, res, next) => {
+router.post("/", async (req, res, next) => {
     try {
         const { name, description, trackIds } = req.body;
         const user = req.user;
@@ -38,7 +37,7 @@ router.post("/", authenticate, async (req, res, next) => {
 
 // GET /playlists/:id with a list of its tracks
 // * if the playlist does not belong to the logged in user, return 403 status
-router.get("/:id", authenticate, async (req, res, next) => {
+router.get("/:id", async (req, res, next) => {
     try {
         const { id } = req.params;
         const user = req.user;
