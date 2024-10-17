@@ -46,7 +46,7 @@ router.get("/:id", async (req, res, next) => {
             include: { tracks: true },
         });
         if (user.id !== playlist.ownerId) {
-            res.sendStatus(403);
+            next({ status: 403, message: "You are not authorized to view this playlist." });
         }
         res.json(playlist);
     } catch (e) {
