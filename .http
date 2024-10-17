@@ -1,0 +1,49 @@
+@host=http://localhost:3000
+
+### POST /register
+POST {{host}}/register
+Content-Type: application/json
+
+{
+    "username": "mannysmith",
+    "password": "foobar"
+}
+
+### POST /login
+# @name login
+POST {{host}}/login
+Content-Type: application/json
+
+{
+    "username": "mannysmith",
+    "password": "foobar"
+}
+
+### Save token after login
+@token = {{login.response.body.token}}
+
+### GET /playlists belonging to logged in user; if token not provided, expect a 401 error
+GET {{host}}/playlists
+Authorization: Bearer {{token}}
+
+### POST /playlists to logged in user; if token not provided, expect a 401 error
+POST {{host}}/playlists
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Party songs",
+    "description": "Songs to play at a party",
+    "trackIds": [16, 6, 15]
+}
+
+### GET /playlists/:id; If the playlist does not belong to the logged in user, expect a 403 error; if token not provided, expect a 401 error
+GET {{host}}/playlists/4
+Authorization: Bearer {{token}}
+
+### GET /tracks
+GET {{host}}/tracks
+
+### GET /tracks/:id; If a user is logged in, get the corresponding playlists
+GET {{host}}/tracks/2
+Authorization: Bearer {{token}}

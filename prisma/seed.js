@@ -1,6 +1,11 @@
 const prisma = require("../prisma");
 const { faker } = require("@faker-js/faker");
 
+/**
+ * Adds tracks to the database
+ * 
+ * @param {number} numTracks 
+ */
 const seed = async (numTracks) => {
     const tracks = Array.from({ length: numTracks }, (_, i) => ({
         name: faker.music.songName(),
@@ -9,6 +14,8 @@ const seed = async (numTracks) => {
         data: tracks
     });
 };
+
+// Initialize database with 20 tracks
 seed(20)
   .then(async () => await prisma.$disconnect())
   .catch(async (e) => {
